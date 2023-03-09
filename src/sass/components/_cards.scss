@@ -1,0 +1,73 @@
+@use '../variables' as *;
+@use '../tools/' as *;
+
+.card1__container {
+  width: 100%;
+  display: grid;
+  align-items: center;
+  grid-template-columns: min-content 1fr;
+  column-gap: 10px;
+  margin-bottom: 20px;
+}
+
+.card1__checkbox {
+  cursor: pointer;
+}
+
+.card1__content {
+  background-color: $color__card--primary;
+  border-radius: $border__item--primary;
+  padding: 20px;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: min-content 1fr;
+  grid-template-areas: 
+    'icon title'
+    'icon description'
+    'icon date'
+  ;
+}
+
+.card1__icon {
+  grid-area: icon;
+  aspect-ratio: 1/1;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: $border__item--primary;
+  font-size: $font__size--quaternary;
+  color: $color__icon--primary;
+}
+
+@for $i from 1 through length($colors__chips--1) {
+  .card1__icon--color-#{$i} {
+    background-color: nth($colors__chips--1, $i);
+  }
+}
+
+.card1__title {
+  grid-area: title;
+  @include title($color-text-primary, $font__size--tertiary, 0);
+}
+
+.card1__title--strikethrough {
+  text-decoration: line-through;
+}
+
+.card1__description {
+  font-weight: 600;
+  grid-area: description;
+  @include title($color-text-tertiary, $font__size--quaternary, 0);
+}
+
+.card1__description--strikethrough {
+  text-decoration: line-through;
+}
+
+.card1__date {
+  font-weight: 600;
+  grid-area: date;
+  text-align: end;
+  @include title($color-text-primary, $font__size--quaternary, 0);
+}

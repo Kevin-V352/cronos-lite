@@ -1,0 +1,45 @@
+@use '../variables' as *;
+
+@mixin title($color, $font-size, $margin) {
+  color: $color;
+  font-size: $font-size;
+  margin: $margin;
+}
+
+@mixin base-button($font-size, $color, $border-radius, $background-color) {
+  cursor: pointer;
+  border: none;
+  font-size: $font-size;
+  color: $color;
+  border-radius: $border-radius;
+  background: $background-color;
+}
+
+@mixin screen-md() {
+  @media screen and (min-width: $breakpoint--md) {
+    @content;
+  }
+}
+
+@mixin screen-lg() {
+  @media screen and (min-width: $breakpoint--lg) {
+    @content;
+  }
+}
+
+@mixin screen-xl() {
+  @media screen and (min-width: $breakpoint--xl) {
+    @content;
+  }
+}
+
+@mixin screen-xxl() {
+  @media screen and (min-width: $breakpoint--xxl) {
+    @content;
+  }
+}
+
+@mixin flex-column-alignment {
+  display: flex;
+  flex-direction: column;
+}

@@ -1,0 +1,141 @@
+@use '../variables' as *;
+@use '../tools' as *;
+
+html {
+  font-size: 10px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: $color-background-gradient;
+}
+
+* {
+  font-family: 'Assistant', sans-serif;
+}
+
+//TODO: THIS
+textarea:focus, input:focus{
+  outline: none;
+}
+
+main {
+  @include flex-column-alignment;
+  margin: 0;
+  padding: 20px;
+
+  @include screen-md(){
+    padding: 80px;
+  };
+
+  @include screen-lg {
+    padding: 40px 250px;
+    align-items: center;
+  };
+
+  @include screen-xxl {
+    padding: 80px 350px;
+  }
+}
+
+.title {
+  font-family: Library3;
+  font-weight: 400;
+  @include title($color-text-primary, $font__size--primary, 0 0 20px 0);
+}
+
+.greetings {
+  @include title($color-text-primary, $font__size--secondary, 0);
+}
+
+.date {
+  @include title($color-text-secondary, $font__size--secondary, 0 0 20px 0);
+}
+
+.modal__container {
+  width: calc(100% - 40px);
+  border: none;
+  padding: 30px;
+  box-sizing: border-box;
+  border-radius: $border__item--primary;
+  background-color: $color__modal--primary;
+
+  @include screen-md {
+    width: calc(100% - 160px);
+  };
+
+  @include screen-lg {
+    width: calc(100% - 500px);
+  };
+
+  @include screen-xxl {
+    width: calc(100% - 700px);
+  };
+}
+
+.modal__title {
+  @include title($color-text-primary, $font__size--tertiary, 0) 
+}
+
+.modal__form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal__input {
+  border: none;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  font-weight: 600;
+  font-size: $font__size--quaternary;
+  background-color: $color__input--primary;
+  border-radius: $border__item--primary;
+  color: $color-text-primary;
+
+  &::placeholder {
+    color: $color-text-tertiary;
+  }
+}
+
+.modal__textarea {
+  resize: none;
+  border: none;
+  padding: 10px;
+  font-weight: 600;
+  font-size: $font__size--quaternary;
+  background-color: $color__input--primary;
+  border-radius: $border__item--primary;
+  color: $color-text-primary;
+}
+
+.modal__date {
+  border: none;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  font-weight: 600;
+  font-size: $font__size--quaternary;
+  background-color: $color__input--primary;
+  border-radius: $border__item--primary;
+  color: $color-text-primary;
+}
+
+.modal__section {
+  @include title($color-text-primary, $font__size--quaternary, 0);
+}
+
+.modal__categories {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.nose {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

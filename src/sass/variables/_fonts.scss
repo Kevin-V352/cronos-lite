@@ -1,0 +1,13 @@
+//* Fonts ============================================================================
+
+@font-face {
+  font-family: 'Library3';
+  src: url('/src/assets/library3.woff2') format('woff2');
+}
+
+//* Fontsizes ========================================================================
+
+$font__size--primary: 5rem;
+$font__size--secondary: 3rem;
+$font__size--tertiary: 2.5rem;
+$font__size--quaternary: 1.6rem;

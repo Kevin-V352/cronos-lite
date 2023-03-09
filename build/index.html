@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Google fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="./css/index.css">
+
+  <!-- flatpickr -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
+
+  <!-- AOS -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+  <title>CRONOS LITE</title>
+</head>
+
+<body>
+  <main>
+    <h1 class="title" data-aos="zoom-in">CRONOS LITE</h1>
+    <h2 class="greetings" data-aos="fade-down" data-aos-delay="100" id="greetings"></h2>
+    <h2 class="date" data-aos="fade-down" data-aos-delay="200" id="date"></h2>
+
+    <button class="button--primary" data-aos="zoom-in" data-aos-delay="600" id="add-task-button">Create task</button>
+
+    <dialog class="modal__container" data-aos="zoom-in" id="create-task-modal">
+      <form class="modal__form" onsubmit="createTask(event)" id="create-task-form">
+        <div class="nose">
+          <h3 class="modal__title">Create New Task</h3>
+          <button class="button--invisible" type="button" onclick="openAddTaskModal(false)">
+            <i class="fa-solid fa-x"></i>
+          </button>
+        </div>
+        <input type="text" class="modal__input" placeholder="Task Title" name="create-task-title-input" required />
+        <textarea class="modal__textarea" rows="5" name="create-task-description-textarea" required></textarea>
+
+        <h4 class="modal__section">Choose date & time</h4>
+        <input type="datetime-local" class="modal__date" placeholder="Select a date" name="create-task-input-date"
+          id="create-task-input-date" required />
+
+        <h4 class="modal__section">Category</h4>
+        <div class="modal__categories" id="create-task-categories"></div>
+
+        <button class="button--primary" id="createTaskButton" type="submit">Create task</button>
+      </form>
+    </dialog>
+
+    <div class="list1__container">
+      <h3 class="list1__title" data-aos="fade-right" data-aos-delay="200" id="pending-tasks-title"></h3>
+      <div class="list1__content" id="pending-tasks-list"></div>
+    </div>
+
+    <div class="list1__container">
+      <h3 class="list1__title" data-aos="fade-right" data-aos-delay="200" id="completed-tasks-title"></h3>
+      <div class="list1__content" id="completed-tasks-list"></div>
+    </div>
+
+  </main>
+
+  <!-- Main -->
+  <script src="/build/index.js"></script>
+
+  <!-- Fontawesome -->
+  <script src="https://kit.fontawesome.com/f0626e74b7.js" crossorigin="anonymous"></script>
+
+  <!-- flatpickr -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+  <!-- AOS -->
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+  <script>
+    flatpickr("#create-task-input-date", {
+      enableTime: true,
+      dateFormat: "Y-m-d h:i K",
+      static: true
+    });
+
+    AOS.init();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,18 @@
+@use '../variables' as *;
+@use '../tools/' as *;
+
+.list1__container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.list1__title {
+  @include title($color-text-primary, $font__size--tertiary, 20px 0)
+}
+
+.list1__content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
