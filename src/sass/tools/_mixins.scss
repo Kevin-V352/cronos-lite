@@ -44,3 +44,19 @@
   display: flex;
   flex-direction: column;
 }
+
+@mixin webkit__scrollbar {
+  /* Works on Chrome, Edge, and Safari */
+  &::-webkit-scrollbar {
+    background-color: $color__scrollbar-background;
+  };
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $color__scrollbar-thumb;
+  };
+}
+
+@mixin mozilla__scrollbar {
+  /* Works on Firefox */
+  scrollbar-color: $color__scrollbar-thumb $color__scrollbar-background;
+}

@@ -10,22 +10,13 @@ body {
   padding: 0;
   min-height: 100vh;
   background: $color__background--gradient;
-
-  /* Works on Chrome, Edge, and Safari */
-  &::-webkit-scrollbar {
-    background-color: $color__scrollbar-background;
-  };
-
-  &::-webkit-scrollbar-thumb {
-    background-color: $color__scrollbar-thumb;
-  };
 }
 
 * {
   font-family: 'Assistant', sans-serif;
 
-  /* Works on Firefox */
-  scrollbar-color: $color__scrollbar-thumb $color__scrollbar-background;
+  @include mozilla__scrollbar;
+  @include webkit__scrollbar;
 }
 
 //TODO: THIS
