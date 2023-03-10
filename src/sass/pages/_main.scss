@@ -9,11 +9,23 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  background: $color-background-gradient;
+  background: $color__background--gradient;
+
+  /* Works on Chrome, Edge, and Safari */
+  &::-webkit-scrollbar {
+    background-color: $color__scrollbar-background;
+  };
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $color__scrollbar-thumb;
+  };
 }
 
 * {
   font-family: 'Assistant', sans-serif;
+
+  /* Works on Firefox */
+  scrollbar-color: $color__scrollbar-thumb $color__scrollbar-background;
 }
 
 //TODO: THIS
@@ -37,21 +49,20 @@ main {
 
   @include screen-xxl {
     padding: 80px 350px;
-  }
+  };
 }
 
 .title {
   font-family: Library3;
-  font-weight: 400;
-  @include title($color-text-primary, $font__size--primary, 0 0 20px 0);
+  @include base-title($color__text--primary, $font__size--primary, 0 0 20px 0);
 }
 
 .greetings {
-  @include title($color-text-primary, $font__size--secondary, 0);
+  @include base-title($color__text--primary, $font__size--secondary, initial, 700);
 }
 
 .date {
-  @include title($color-text-secondary, $font__size--secondary, 0 0 20px 0);
+  @include base-title($color__text--secondary, $font__size--secondary, 0 0 20px 0, 700);
 }
 
 .modal__container {
@@ -76,56 +87,16 @@ main {
 }
 
 .modal__title {
-  @include title($color-text-primary, $font__size--tertiary, 0) 
+  @include base-title($color__text--primary, $font__size--tertiary, 0, 700);
 }
 
 .modal__form {
-  display: flex;
-  flex-direction: column;
+  @include flex-column-alignment;
   gap: 20px;
 }
 
-.modal__input {
-  border: none;
-  padding: 10px;
-  width: 100%;
-  box-sizing: border-box;
-  font-weight: 600;
-  font-size: $font__size--quaternary;
-  background-color: $color__input--primary;
-  border-radius: $border__item--primary;
-  color: $color-text-primary;
-
-  &::placeholder {
-    color: $color-text-tertiary;
-  }
-}
-
-.modal__textarea {
-  resize: none;
-  border: none;
-  padding: 10px;
-  font-weight: 600;
-  font-size: $font__size--quaternary;
-  background-color: $color__input--primary;
-  border-radius: $border__item--primary;
-  color: $color-text-primary;
-}
-
-.modal__date {
-  border: none;
-  padding: 10px;
-  width: 100%;
-  box-sizing: border-box;
-  font-weight: 600;
-  font-size: $font__size--quaternary;
-  background-color: $color__input--primary;
-  border-radius: $border__item--primary;
-  color: $color-text-primary;
-}
-
 .modal__section {
-  @include title($color-text-primary, $font__size--quaternary, 0);
+  @include base-title($color__text--primary, $font__size--quaternary, 0, 700);
 }
 
 .modal__categories {
@@ -134,7 +105,7 @@ main {
   flex-wrap: wrap;
 }
 
-.nose {
+.modal__wrapper-title {
   display: flex;
   justify-content: space-between;
   align-items: center;

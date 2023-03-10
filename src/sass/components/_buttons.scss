@@ -1,27 +1,27 @@
 @use '../variables' as *;
 @use '../tools/' as *;
 
-.button--primary {
+.button-1 {
   padding: 10px 30px;
   font-weight: 600;
-  @include base-button($font__size--tertiary, $color-text-primary, $border__item--primary, linear-gradient(90deg, $color__button--primary 0%, $color__button--secondary 100%));
+  @include base-button($font__size--tertiary, $color__text--primary, $border__item--primary, linear-gradient(90deg, $color__button--primary 0%, $color__button--secondary 100%));
 }
 
 .icon-button--check {
   width: 40px;
   padding: 0;
   aspect-ratio: 1/1;
-  @include base-button($font__size--quaternary, $color-text-quaternary, $border__item--primary, $color__button--tertiary);
+  @include base-button($font__size--quaternary, $color__text--quaternary, $border__item--primary, $color__button--tertiary);
 }
 
 .icon-button--delete {
   width: 40px;
   padding: 0;
   aspect-ratio: 1/1;
-  @include base-button($font__size--quaternary, $color-text-quaternary, $border__item--primary, $color__button--quaternary);
+  @include base-button($font__size--quaternary, $color__text--quaternary, $border__item--primary, $color__button--quaternary);
 }
 
 .button--invisible {
-  @include base-button($font__size--quaternary, $color-text-primary, 0, transparent);
+  @include base-button($font__size--quaternary, $color__text--primary, 0, transparent);
 }
 

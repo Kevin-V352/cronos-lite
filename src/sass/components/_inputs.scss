@@ -1,0 +1,21 @@
+@use '../variables' as *;
+
+.input-1 {
+  border: none;
+  width: 100%;
+  padding: 10px;
+  font-weight: 600;
+  box-sizing: border-box;
+  font-size: $font__size--quaternary;
+  background-color: $color__input--primary;
+  border-radius: $border__item--primary;
+  color: $color__text--primary;
+
+  &::placeholder {
+    color: $color__text--tertiary;
+  };
+}
+
+.input-1--not-resizable {
+  resize: none;
+}
