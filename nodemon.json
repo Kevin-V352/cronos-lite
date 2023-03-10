@@ -1,0 +1,10 @@
+{
+  "watch": [
+    "src/"
+  ],
+  "ignore": [
+    "src/sass/"
+  ],
+  "ext": ".ts, .html, .woff2",
+  "exec": "yarn dev_build"
+}

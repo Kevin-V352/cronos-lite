@@ -4,11 +4,13 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "tsc": "tsc",
-    "build": "concurrently \"nodemon -w src/index.ts -x yarn tsc\" \"sass --watch ./src/sass/:build/css\""
+    "dev_build": "yarn tsc & yarn copyfiles -u 1 ./src/assets/* ./src/index.html ./build",
+    "dev": "concurrently \"yarn nodemon\" \"sass --watch ./src/sass/:build/css\"",
+    "build": "yarn dev_build & yarn sass ./src/sass:build/css"
   },
   "devDependencies": {
     "concurrently": "^7.6.0",
+    "copyfiles": "^2.4.1",
     "nodemon": "^2.0.21",
     "sass": "^1.58.3",
     "typescript": "^4.9.5"
