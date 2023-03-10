@@ -110,3 +110,17 @@ main {
   justify-content: space-between;
   align-items: center;
 }
+
+.author__container {
+  @include flex-column-alignment;
+  align-items: center;
+  gap: 10px;
+}
+
+.author__image {
+  height: 10vh;
+}
+
+.author__text {
+  @include base-title($color__text--tertiary, $font__size--tertiary, 0, 600);
+}
