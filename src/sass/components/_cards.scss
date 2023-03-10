@@ -1,7 +1,7 @@
 @use '../variables' as *;
 @use '../tools/' as *;
 
-.card1__container {
+.card-1__container {
   width: 100%;
   display: grid;
   align-items: center;
@@ -10,11 +10,11 @@
   margin-bottom: 20px;
 }
 
-.card1__checkbox {
+.card-1__checkbox {
   cursor: pointer;
 }
 
-.card1__content {
+.card-1__content {
   background-color: $color__card--primary;
   border-radius: $border__item--primary;
   padding: 20px;
@@ -28,7 +28,7 @@
   ;
 }
 
-.card1__icon {
+.card-1__icon {
   grid-area: icon;
   aspect-ratio: 1/1;
   width: 40px;
@@ -41,33 +41,31 @@
 }
 
 @for $i from 1 through length($colors__chips--1) {
-  .card1__icon--color-#{$i} {
+  .card-1__icon--color-#{$i} {
     background-color: nth($colors__chips--1, $i);
   }
 }
 
-.card1__title {
+.card-1__title {
   grid-area: title;
-  @include title($color-text-primary, $font__size--tertiary, 0);
+  @include base-title($color__text--primary, $font__size--tertiary, 0, 700);
 }
 
-.card1__title--strikethrough {
+.card-1__title--strikethrough {
   text-decoration: line-through;
 }
 
-.card1__description {
-  font-weight: 600;
+.card-1__description {
   grid-area: description;
-  @include title($color-text-tertiary, $font__size--quaternary, 0);
+  @include base-title($color__text--tertiary, $font__size--quaternary, 0, 600);
 }
 
-.card1__description--strikethrough {
+.card-1__description--strikethrough {
   text-decoration: line-through;
 }
 
-.card1__date {
-  font-weight: 600;
+.card-1__date {
   grid-area: date;
   text-align: end;
-  @include title($color-text-primary, $font__size--quaternary, 0);
+  @include base-title($color__text--primary, $font__size--quaternary, 0, 600);
 }

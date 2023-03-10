@@ -1,25 +1,35 @@
-$color-background-secondary: rgba(30,31,37,1);
-$color-background-gradient: linear-gradient(180deg, rgba(37,32,65,1) 0%, rgba(30,31,37,1) 100%);
+//* Backgrounds ======================================================================
+$color__background--secondary: rgba(30,31,37,1);
+$color__background--gradient: linear-gradient(180deg, rgba(37,32,65,1) 0%, rgba(30,31,37,1) 100%);
 
-$color-text-primary: #f6f6f7;
-$color-text-secondary: #7e41ff;
-$color-text-tertiary: #787b8d;
-$color-text-quaternary: rgba(30,31,37,1);
+//* Texts ============================================================================
+$color__text--primary: #f6f6f7;
+$color__text--secondary: #7E41FF;
+$color__text--tertiary: #787b8d;
+$color__text--quaternary: rgba(30,31,37,1);
 
+//* Buttons =========================================================================
 $color__button--primary: #B331F8;
 $color__button--secondary: #752AD1;
 $color__button--tertiary: #65FFA7;
 $color__button--quaternary: #FD6C6D;
 
+//* Modals ==========================================================================
 $color__modal--primary: #20212c;
 
+//* Cards ===========================================================================
 $color__card--primary: #2A2E3D;
 
+//* Icons ===========================================================================
 $color__icon--primary: #f6f6f7;
 
+//* Chips ===========================================================================
 $color__chip--selected: #f6f6f7;
+$colors__chips--1: #FD6C6D, #F19731, #6457FF, #234EBC, #2BC8D9, #8667C8, #4A9FF5, #C70A80, #26CF8E, #BB1542, #892CDC;
 
-$colors__chips--1: #FD6C6D, #F19731, #6457FF, #234EBC, #2BC8D9, #8667C8;
-
+//* Inputs ==========================================================================
 $color__input--primary: #2A2E3D;
 
+//* ScrollBars ======================================================================
+$color__scrollbar-background: rgba(30,31,37,1);
+$color__scrollbar-thumb: #2A2E3D;

@@ -1,20 +1,19 @@
-@use '../variables/' as *;
-@use '../tools/' as *;
+@use '../variables' as *;
+@use '../tools' as *;
 
-.chip1 {
+.chip-1 {
   padding: 5px 15px;
-  font-weight: 600;
   cursor: pointer;
   border-radius: $border__item--primary;
-  @include title($color-text-primary, $font__size--quaternary, 0);
+  @include base-title($color__text--primary, $font__size--quaternary, 0, 600);
 }
 
-.chip1--selected {
+.chip-1--selected {
   border: $color__chip--selected solid 2px;
 }
 
 @for $i from 1 through length($colors__chips--1) {
-  .chip1--color-#{$i} {
+  .chip-1--color-#{$i} {
     background-color: nth($colors__chips--1, $i);
-  }
+  };
 }

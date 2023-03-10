@@ -1,9 +1,10 @@
 @use '../variables' as *;
 
-@mixin title($color, $font-size, $margin) {
+@mixin base-title($color, $font-size, $margin: initial, $font-weight: normal) {
   color: $color;
   font-size: $font-size;
   margin: $margin;
+  font-weight: $font-weight;
 }
 
 @mixin base-button($font-size, $color, $border-radius, $background-color) {
