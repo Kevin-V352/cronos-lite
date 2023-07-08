@@ -33,5 +33,5 @@
         "sourceType": "module",
         "project": ["./tsconfig.json"]
     },
-    "ignorePatterns": ["**/*.js"]
+    "ignorePatterns": ["**/*.js", "**/*.d.ts"]
 }

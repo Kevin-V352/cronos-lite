@@ -1,6 +1,8 @@
-/* eslint-disable @typescript-eslint/key-spacing */
 //* Custom Sass
 import './sass/app.scss';
+
+//* Images
+import personalLogo from './assets/icons/personal-logo.png';
 
 //* Utils
 import { elementsGenerators, nodeModifiers, selectors } from './utils';
@@ -15,6 +17,7 @@ const $createTaskModal = selectors.byId('create-task-modal') as HTMLDialogElemen
 const $pendingTasksList = selectors.byId('pending-tasks-list') as HTMLDivElement | null;
 const $completedTasksList = selectors.byId('completed-tasks-list') as HTMLDivElement | null;
 const $createTaskForm = selectors.byId('create-task-form') as HTMLFormElement | null;
+const $personalLogo = selectors.byId('personal-logo') as HTMLImageElement | null;
 
 //* Variables
 let lastCategorySelected: number | null = null;
@@ -304,6 +307,8 @@ const initialLoad = (): void => {
   getCurrentDate();
   loadTasks();
   elementsGenerators.renderCategories('create-task-categories');
+
+  if ($personalLogo) $personalLogo.src = personalLogo;
 
 };
 
