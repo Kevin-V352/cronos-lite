@@ -13,8 +13,6 @@ body {
 }
 
 * {
-  font-family: 'Assistant', sans-serif;
-
   @include mozilla__scrollbar;
   @include webkit__scrollbar;
 }
