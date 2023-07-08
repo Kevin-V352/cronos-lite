@@ -37,9 +37,7 @@
   <!-- Google fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;500;600;700;800&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="./css/index.css">
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- flatpickr -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -55,7 +53,7 @@
     <h2 class="greetings" data-aos="fade-down" data-aos-delay="100" id="greetings"></h2>
     <h2 class="date" data-aos="fade-down" data-aos-delay="200" id="date"></h2>
 
-    <button class="button-1" data-aos="zoom-in" data-aos-delay="600" id="add-task-button">Create task</button>
+    <button onclick="openAddTaskModal(true)" class="button-1" data-aos="zoom-in" data-aos-delay="600">Create task</button>
 
     <dialog class="modal__container" data-aos="zoom-in" id="create-task-modal">
       <form class="modal__form" onsubmit="createTask(event)" id="create-task-form">
@@ -92,7 +90,7 @@
     <footer class="author__container" data-aos="zoom-out" data-aos-delay="1000" data-aos-once="true">
       <span class="author__text" >Powered by</span>
       <a href="https://github.com/Kevin-V352">
-        <img src="./assets/personal-logo.webp" class="author__image" alt="personal-logo" />
+        <img src="./assets/icons/yellow-face-ok.png" class="author__image" alt="personal-logo" />
       </a>
     </footer>
 

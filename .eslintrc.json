@@ -23,7 +23,8 @@
                     {
                         "align": "value"
                     }
-                ]
+                ],
+                "@typescript-eslint/key-spacing": "off"
             }
         }
     ],

@@ -1,42 +1,22 @@
 /* eslint-disable @typescript-eslint/key-spacing */
-//* Interfacesgreetings
-interface Task {
-  id: number
-  title: string
-  description?: string
-  category: number
-  date: string
-  status: 'pending' | 'completed'
-}
+//* Custom Sass
+import './sass/app.scss';
 
-//* CustomSelectors
-const byId = (id: string): HTMLElement | null => document.getElementById(id);
+//* Utils
+import { elementsGenerators, nodeModifiers, selectors } from './utils';
+
+//* Interfaces
+import { type Task } from './interfaces';
 
 //* Elements
-const $date = byId('date') as HTMLTitleElement | null;
-const $greetings = byId('greetings') as HTMLTitleElement | null;
-const $addTaskButton = byId('add-task-button') as HTMLButtonElement | null;
-const $createTaskModal = byId('create-task-modal') as HTMLDialogElement | null;
-const $addTaskCategories = byId('create-task-categories') as HTMLDivElement | null;
-const $pendingTasksList = byId('pending-tasks-list') as HTMLDivElement | null;
-const $completedTasksList = byId('completed-tasks-list') as HTMLDivElement | null;
-const $createTaskForm = byId('create-task-form') as HTMLFormElement | null;
+const $date = selectors.byId('date') as HTMLTitleElement | null;
+const $greetings = selectors.byId('greetings') as HTMLTitleElement | null;
+const $createTaskModal = selectors.byId('create-task-modal') as HTMLDialogElement | null;
+const $pendingTasksList = selectors.byId('pending-tasks-list') as HTMLDivElement | null;
+const $completedTasksList = selectors.byId('completed-tasks-list') as HTMLDivElement | null;
+const $createTaskForm = selectors.byId('create-task-form') as HTMLFormElement | null;
 
-//* Constants
-const categories: Record<number, { icon: string, name: string }> = {
-  1:  { icon: 'fa-solid fa-utensils', name: 'Food' },
-  2:  { icon: 'fa-solid fa-dumbbell', name: 'Workout' },
-  3:  { icon: 'fa-solid fa-briefcase', name: 'Work' },
-  4:  { icon: 'fa-solid fa-pen-nib', name: 'Desing' },
-  5:  { icon: 'fa-solid fa-person-running', name: 'Run' },
-  6:  { icon: 'fa-solid fa-note-sticky', name: 'Various' },
-  7:  { icon: 'fa-solid fa-book', name: 'Study' },
-  8:  { icon: 'fa-solid fa-school', name: 'Classes' },
-  9:  { icon: 'fa-solid fa-bag-shopping', name: 'Shop' },
-  10: { icon: 'fa-solid fa-prescription-bottle-medical', name: 'Medicine' },
-  11: { icon: 'fa-solid fa-moon', name: 'Sleep' }
-};
-
+//* Variables
 let lastCategorySelected: number | null = null;
 
 //* Functions
@@ -66,50 +46,6 @@ const getTasksFromLocalStorage = (): { allTasks: Task[], pendingTasks: Task[], c
 
 };
 
-const renderTaskInList = (
-  task: Task,
-  parentNode: HTMLDivElement,
-  listTitleId?: 'pending-tasks-title' | 'completed-tasks-title',
-  listTitleValue?: string
-): void => {
-
-  const { id, title, description, date, category, status } = task;
-  const icon = categories[category].icon;
-  const isPending = (status === 'pending');
-
-  const newNode = `
-    <div class="card-1__container" id="${id}" data-aos="fade-down">
-      <button 
-        class="${isPending ? 'icon-button--check' : 'icon-button--delete'}" 
-        onclick="${isPending ? `completeTask(${id})` : `deleteTask(${id})`}"
-      >
-        <i class="fa-solid ${isPending ? 'fa-check' : 'fa-x'}"></i>
-      </button>
-      <div class="card-1__content">
-        <span class="card-1__icon card-1__icon--color-${category}">
-          <i class="${icon}"></i>
-        </span>
-        <h4 class="card-1__title ${!isPending ? 'card-1__title--strikethrough' : ''}">${title}</h4>
-        <p class="card-1__description ${!isPending ? 'card-1__title--strikethrough' : ''}">${description ?? ''}</p>
-        <span class="card-1__date">${date}</span>
-      </div>
-    </div>
-  `;
-
-  parentNode.insertAdjacentHTML('afterbegin', newNode);
-
-  if (listTitleId && listTitleValue !== undefined) updateListTitle(listTitleId, listTitleValue);
-
-};
-
-const removeNode = (id: number): void => {
-
-  const $taskToRemove = document.getElementById(`${id}`) as HTMLDivElement | null;
-  if (!$taskToRemove) return;
-  $taskToRemove.parentNode?.removeChild($taskToRemove);
-
-};
-
 const resetCategory = (): void => {
 
   const previousCategorySelected = document.getElementsByClassName('chip-1--selected')[0] as HTMLSpanElement;
@@ -117,17 +53,6 @@ const resetCategory = (): void => {
 
 };
 
-const updateListTitle = (listTitleId: 'pending-tasks-title' | 'completed-tasks-title', value: string): void => {
-
-  const $listTitle = document.getElementById(listTitleId) as HTMLTitleElement;
-
-  if (!$listTitle) return;
-
-  $listTitle.textContent = value;
-
-};
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const selectTaskCategory = (id: number): void => {
 
   resetCategory();
@@ -160,11 +85,10 @@ const openAddTaskModal = (open: boolean): void => {
     resetTaskForm();
     $createTaskModal.close();
 
-  }
+  };
 
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const createTask = (e: FormDataEvent): void => {
 
   e.preventDefault();
@@ -208,9 +132,9 @@ const createTask = (e: FormDataEvent): void => {
   const tasksFromLocaleStorage = getTasksFromLocalStorage();
 
   saveTaskInLocalStorage(newTask);
-  renderTaskInList(
+  elementsGenerators.renderTaskInList(
     newTask,
-    $pendingTasksList,
+    'pending-tasks-list',
     'pending-tasks-title',
     `Pending - ${(tasksFromLocaleStorage && tasksFromLocaleStorage.pendingTasks.length > 0) ? (tasksFromLocaleStorage.pendingTasks.length + 1) : 1}`
   );
@@ -220,12 +144,11 @@ const createTask = (e: FormDataEvent): void => {
 
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const completeTask = (id: number): void => {
 
   if (!$completedTasksList) return;
 
-  removeNode(id);
+  nodeModifiers.removeNode(id);
 
   const tasksFromLocaleStorage = getTasksFromLocalStorage();
 
@@ -237,20 +160,19 @@ const completeTask = (id: number): void => {
 
   if (!taskToChangeStage) return;
 
-  renderTaskInList(
+  elementsGenerators.renderTaskInList(
     { ...taskToChangeStage, status: 'completed' },
-    $completedTasksList,
+    'completed-tasks-list',
     'completed-tasks-title',
     `Completed - ${(completedTasks.length + 1)}`
   );
 
-  updateListTitle('pending-tasks-title', ((pendingTasks.length - 1) > 0) ? `Pending - ${(pendingTasks.length - 1)}` : '');
+  elementsGenerators.renderListTitle('pending-tasks-title', ((pendingTasks.length - 1) > 0) ? `Pending - ${(pendingTasks.length - 1)}` : '');
 
-  updateStageofTaskInLocalStorage(id);
+  updateStageOfTaskInLocalStorage(id);
 
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const deleteTask = (id: number): void => {
 
   const tasksFromLocaleStorage = getTasksFromLocalStorage();
@@ -259,8 +181,8 @@ const deleteTask = (id: number): void => {
 
   const { completedTasks } = tasksFromLocaleStorage;
 
-  updateListTitle('completed-tasks-title', ((completedTasks.length - 1) > 0) ? `Completed - ${(completedTasks.length - 1)}` : '');
-  removeNode(id);
+  elementsGenerators.renderListTitle('completed-tasks-title', ((completedTasks.length - 1) > 0) ? `Completed - ${(completedTasks.length - 1)}` : '');
+  nodeModifiers.removeNode(id);
   deleteTaskFromLocalStorage(id);
 
 };
@@ -284,7 +206,7 @@ const saveTaskInLocalStorage = (newTask: Task): void => {
 
 };
 
-const updateStageofTaskInLocalStorage = (id: number): void => {
+const updateStageOfTaskInLocalStorage = (id: number): void => {
 
   const tasksFromLocaleStorage = localStorage.getItem('tasks');
 
@@ -344,26 +266,7 @@ const getCurrentDate = (): void => {
 
 };
 
-const loadCategories = (): void => {
-
-  if (!$addTaskCategories) return;
-
-  for (const categoryKey in categories) {
-
-    $addTaskCategories.innerHTML += `
-      <span 
-        class="chip-1 chip-1--color-${categoryKey}" 
-        onclick="selectTaskCategory(${categoryKey})"
-        id="category-${categoryKey}"
-      >
-        ${categories[categoryKey].name}
-      </span>`;
-
-  };
-
-};
-
-const initialLoadOfTasks = (): void => {
+const loadTasks = (): void => {
 
   const tasksFromLocaleStorage = getTasksFromLocalStorage();
 
@@ -371,23 +274,23 @@ const initialLoadOfTasks = (): void => {
 
   const { pendingTasks, completedTasks } = tasksFromLocaleStorage;
 
-  updateListTitle('pending-tasks-title', (pendingTasks.length > 0) ? `Pending - ${pendingTasks.length}` : '');
+  elementsGenerators.renderListTitle('pending-tasks-title', (pendingTasks.length > 0) ? `Pending - ${pendingTasks.length}` : '');
   if (pendingTasks.length > 0) {
 
     pendingTasks.forEach((task) => {
 
-      renderTaskInList(task, $pendingTasksList);
+      elementsGenerators.renderTaskInList(task, 'pending-tasks-list');
 
     });
 
   }
 
-  updateListTitle('completed-tasks-title', (completedTasks.length > 0) ? `Completed - ${completedTasks.length}` : '');
+  elementsGenerators.renderListTitle('completed-tasks-title', (completedTasks.length > 0) ? `Completed - ${completedTasks.length}` : '');
   if (completedTasks.length > 0) {
 
     completedTasks.forEach((task) => {
 
-      renderTaskInList(task, $completedTasksList);
+      elementsGenerators.renderTaskInList(task, 'completed-tasks-list');
 
     });
 
@@ -395,15 +298,29 @@ const initialLoadOfTasks = (): void => {
 
 };
 
-//* Events listeners
-$addTaskButton?.addEventListener('click', () => {
+const initialLoad = (): void => {
 
-  openAddTaskModal(true);
+  generateWelcomeMessage();
+  getCurrentDate();
+  loadTasks();
+  elementsGenerators.renderCategories('create-task-categories');
 
-});
+};
+
+// @ts-expect-error -->
+window.openAddTaskModal = openAddTaskModal;
+
+// @ts-expect-error -->
+window.selectTaskCategory = selectTaskCategory;
+
+// @ts-expect-error -->
+window.createTask = createTask;
+
+// @ts-expect-error -->
+window.completeTask = completeTask;
+
+// @ts-expect-error -->
+window.deleteTask = deleteTask;
 
 //* Initial load
-generateWelcomeMessage();
-getCurrentDate();
-loadCategories();
-initialLoadOfTasks();
+initialLoad();

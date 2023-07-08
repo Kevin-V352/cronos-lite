@@ -1,5 +1,12 @@
 # dependencies
 /node_modules
 
+#docs
+/docs
+
 #production
-/build
+/dist
+
+# others
+README.md
+LICENSE
