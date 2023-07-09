@@ -5,6 +5,8 @@
   padding: 5px 15px;
   cursor: pointer;
   border-radius: $border__item--primary;
+  border: transparent solid 2px;
+  transition: ease 200ms;
   @include base-title($color__text--primary, $font__size--quaternary, 0, 600);
 }
 

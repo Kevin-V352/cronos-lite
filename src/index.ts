@@ -1,57 +1,53 @@
-//* Interfacesgreetings
-interface Task {
-  id: number;
-  title: string;
-  description?: string;
-  category: number;
-  date: string;
-  status: 'pending' | 'completed';
-}
+//* Third-party libraries
+import flatpickr from 'flatpickr';
+import AOS from 'aos';
 
-//* CustomSelectors
-const byId = (id: string) => document.getElementById(id);
+//* Custom Css
+import 'flatpickr/dist/flatpickr.min.css';
+import 'flatpickr/dist/themes/dark.css';
+import 'aos/dist/aos.css';
+
+//* Custom Sass
+import './sass/app.scss';
+
+//* Images
+import personalLogo from './assets/icons/personal-logo.png';
+
+//* Utils
+import { elementsGenerators, nodeModifiers, selectors } from './utils';
+
+//* Interfaces
+import { type Task } from './interfaces';
 
 //* Elements
-const $date = byId('date') as HTMLTitleElement | null;
-const $greetings = byId('greetings') as HTMLTitleElement | null;
-const $addTaskButton = byId('add-task-button') as HTMLButtonElement | null;
-const $createTaskModal = byId('create-task-modal') as HTMLDialogElement | null;
-const $addTaskCategories = byId('create-task-categories') as HTMLDivElement | null;
-const $pendingTasksList = byId('pending-tasks-list') as HTMLDivElement | null;
-const $completedTasksList = byId('completed-tasks-list') as HTMLDivElement | null;
-const $createTaskForm = byId('create-task-form') as HTMLFormElement | null;
+const $date = selectors.byId('date') as HTMLTitleElement | null;
+const $greetings = selectors.byId('greetings') as HTMLTitleElement | null;
+const $createTaskModal = selectors.byId('create-task-modal') as HTMLDialogElement | null;
+const $pendingTasksList = selectors.byId('pending-tasks-list') as HTMLDivElement | null;
+const $completedTasksList = selectors.byId('completed-tasks-list') as HTMLDivElement | null;
+const $createTaskForm = selectors.byId('create-task-form') as HTMLFormElement | null;
+const $personalLogo = selectors.byId('personal-logo') as HTMLImageElement | null;
 
-//* Constants
-const categories: { [key: number]: { icon: string, name: string } } = {
-  1: { icon: 'fa-solid fa-utensils', name: 'Food' },
-  2: { icon: 'fa-solid fa-dumbbell', name: 'Workout' },
-  3: { icon: 'fa-solid fa-briefcase', name: 'Work' },
-  4: { icon: 'fa-solid fa-pen-nib', name: 'Desing' },
-  5: { icon: 'fa-solid fa-person-running', name: 'Run' },
-  6: { icon: 'fa-solid fa-note-sticky', name: 'Various' },
-  7: { icon: 'fa-solid fa-book', name: 'Study' },
-  8: { icon: 'fa-solid fa-school', name: 'Classes' },
-  9: { icon: 'fa-solid fa-bag-shopping', name: 'Shop' }, 
-  10: { icon: 'fa-solid fa-prescription-bottle-medical', name: 'Medicine' },
-  11: { icon: 'fa-solid fa-moon', name: 'Sleep' }
-}
-
+//* Variables
 let lastCategorySelected: number | null = null;
 
 //* Functions
 const getTasksFromLocalStorage = (): { allTasks: Task[], pendingTasks: Task[], completedTasks: Task[] } | null => {
+
   const tasksFromLocaleStorage = localStorage.getItem('tasks');
 
   if (!tasksFromLocaleStorage) return null;
 
   const allTasks: Task[] = JSON.parse(tasksFromLocaleStorage);
 
-  let pendingTasks: Task[] = [];
-  let completedTasks: Task[] = [];
+  const pendingTasks: Task[] = [];
+  const completedTasks: Task[] = [];
 
   allTasks.forEach((task) => {
-    if(task.status === 'pending') pendingTasks.push(task);
+
+    if (task.status === 'pending') pendingTasks.push(task);
     else completedTasks.push(task);
+
   });
 
   return {
@@ -62,62 +58,15 @@ const getTasksFromLocalStorage = (): { allTasks: Task[], pendingTasks: Task[], c
 
 };
 
-const renderTaskInList = (
-  task: Task, 
-  parentNode: HTMLDivElement, 
-  listTitleId?: 'pending-tasks-title' | 'completed-tasks-title', 
-  listTitleValue?: string
-): void => {
+const resetCategory = (): void => {
 
-  const { id, title, description, date, category, status } = task;
-  const icon = categories[category].icon;
-  const isPending = (status === 'pending');
-
-  const newNode = `
-    <div class="card-1__container" id="${id}" data-aos="fade-down">
-      <button 
-        class="${isPending ? 'icon-button--check' : 'icon-button--delete'}" 
-        onclick="${isPending ? `completeTask(${id})` : `deleteTask(${id})`}"
-      >
-        <i class="fa-solid ${isPending ? 'fa-check' : 'fa-x'}"></i>
-      </button>
-      <div class="card-1__content">
-        <span class="card-1__icon card-1__icon--color-${category}">
-          <i class="${icon}"></i>
-        </span>
-        <h4 class="card-1__title ${!isPending && 'card-1__title--strikethrough'}">${title}</h4>
-        <p class="card-1__description ${!isPending && 'card-1__title--strikethrough'}">${description}</p>
-        <span class="card-1__date">${date}</span>
-      </div>
-    </div>
-  `;
-
-  parentNode.insertAdjacentHTML('afterbegin', newNode);
-
-  if (listTitleId && listTitleValue !== undefined) updateListTitle(listTitleId, listTitleValue);
-
-};
-
-const removeNode = (id: number) => {
-  const $taskToRemove = document.getElementById(`${id}`) as HTMLDivElement | null;
-  if (!$taskToRemove) return;
-  $taskToRemove.parentNode?.removeChild($taskToRemove);
-};
-
-const resetCategory = () => {
   const previousCategorySelected = document.getElementsByClassName('chip-1--selected')[0] as HTMLSpanElement;
   if (previousCategorySelected) previousCategorySelected.classList.remove('chip-1--selected');
+
 };
 
-const updateListTitle = (listTitleId: 'pending-tasks-title' | 'completed-tasks-title', value: string) => {
-  const $listTitle = document.getElementById(listTitleId) as HTMLTitleElement;
+const selectTaskCategory = (id: number): void => {
 
-  if(!$listTitle) return;
-
-  $listTitle.textContent = value;
-};
-
-const selectTaskCategory = (id: number) => {
   resetCategory();
 
   const categorySelected = document.getElementById(`category-${id}`);
@@ -127,25 +76,33 @@ const selectTaskCategory = (id: number) => {
   categorySelected.classList.add('chip-1--selected');
 
   lastCategorySelected = id;
+
 };
 
-const resetTaskForm = () => {
+const resetTaskForm = (): void => {
+
   resetCategory();
   lastCategorySelected = null;
   $createTaskForm?.reset();
+
 };
 
-const openAddTaskModal = (open: boolean) => {
+const openAddTaskModal = (open: boolean): void => {
+
   if (!$createTaskModal) return;
 
   if (open) $createTaskModal.showModal();
   else {
+
     resetTaskForm();
     $createTaskModal.close();
-  }
+
+  };
+
 };
 
-const createTask = (e: FormDataEvent) => {
+const createTask = (e: FormDataEvent): void => {
+
   e.preventDefault();
   if (!$pendingTasksList) return;
 
@@ -156,47 +113,54 @@ const createTask = (e: FormDataEvent) => {
   const date = formData.get('create-task-input-date') as string;
 
   const fieldsArr = Object.entries({ title, description, date });
-  
-  let emptyFields: string[] = [];
+
+  const emptyFields: string[] = [];
 
   fieldsArr.forEach(([field, value]) => {
+
     if (!(value && value.trim() !== '')) emptyFields.push((field.charAt(0).toUpperCase() + field.slice(1)));
+
   });
 
   if (emptyFields.length > 0) {
+
     alert(`The following fields are required: ${emptyFields.join(', ')}.`);
     return;
+
   };
 
   const id = Date.now();
 
-  const newTask: Task = { 
-    id, 
-    title, 
-    description, 
-    date, 
-    category: lastCategorySelected ?? 6, 
-    status: 'pending' 
+  const newTask: Task = {
+    id,
+    title,
+    description,
+    date,
+    category: lastCategorySelected ?? 6,
+    // eslint-disable-next-line key-spacing
+    status: 'pending'
   };
 
   const tasksFromLocaleStorage = getTasksFromLocalStorage();
 
   saveTaskInLocalStorage(newTask);
-  renderTaskInList(
-    newTask, 
-    $pendingTasksList, 
+  elementsGenerators.renderTaskInList(
+    newTask,
+    'pending-tasks-list',
     'pending-tasks-title',
-    `Pending - ${(tasksFromLocaleStorage && tasksFromLocaleStorage.pendingTasks.length > 0) ? (tasksFromLocaleStorage.pendingTasks.length + 1) : 1}` 
+    `Pending - ${(tasksFromLocaleStorage && tasksFromLocaleStorage.pendingTasks.length > 0) ? (tasksFromLocaleStorage.pendingTasks.length + 1) : 1}`
   );
 
   resetTaskForm();
   openAddTaskModal(false);
+
 };
 
-const completeTask = (id: number) => {
+const completeTask = (id: number): void => {
+
   if (!$completedTasksList) return;
 
-  removeNode(id);
+  nodeModifiers.removeNode(id);
 
   const tasksFromLocaleStorage = getTasksFromLocalStorage();
 
@@ -208,61 +172,75 @@ const completeTask = (id: number) => {
 
   if (!taskToChangeStage) return;
 
-  renderTaskInList(
-    {...taskToChangeStage, status: 'completed'}, 
-    $completedTasksList, 
+  elementsGenerators.renderTaskInList(
+    { ...taskToChangeStage, status: 'completed' },
+    'completed-tasks-list',
     'completed-tasks-title',
-    `Completed - ${(completedTasks.length + 1)}`,  
+    `Completed - ${(completedTasks.length + 1)}`
   );
 
-  updateListTitle('pending-tasks-title', ((pendingTasks.length - 1) > 0) ? `Pending - ${(pendingTasks.length - 1)}` : '');
+  elementsGenerators.renderListTitle('pending-tasks-title', ((pendingTasks.length - 1) > 0) ? `Pending - ${(pendingTasks.length - 1)}` : '');
 
-  updateStageofTaskInLocalStorage(id);
+  updateStageOfTaskInLocalStorage(id);
+
 };
 
-const deleteTask = (id: number) => {
+const deleteTask = (id: number): void => {
+
   const tasksFromLocaleStorage = getTasksFromLocalStorage();
 
   if (!tasksFromLocaleStorage) return;
 
   const { completedTasks } = tasksFromLocaleStorage;
 
-  updateListTitle('completed-tasks-title', ((completedTasks.length - 1) > 0) ? `Completed - ${(completedTasks.length - 1)}` : '');
-  removeNode(id);
+  elementsGenerators.renderListTitle('completed-tasks-title', ((completedTasks.length - 1) > 0) ? `Completed - ${(completedTasks.length - 1)}` : '');
+  nodeModifiers.removeNode(id);
   deleteTaskFromLocalStorage(id);
+
 };
 
-const saveTaskInLocalStorage = (newTask: Task) => {
+const saveTaskInLocalStorage = (newTask: Task): void => {
+
   const tasksFromLocaleStorage = localStorage.getItem('tasks');
 
   if (tasksFromLocaleStorage) {
+
     const parsedTasks: Task[] = JSON.parse(tasksFromLocaleStorage);
     const newTasks: Task[] = [...parsedTasks, newTask];
 
     localStorage.setItem('tasks', JSON.stringify(newTasks));
+
   } else {
+
     localStorage.setItem('tasks', JSON.stringify([newTask]));
+
   }
+
 };
 
-const updateStageofTaskInLocalStorage = (id: number) => {
+const updateStageOfTaskInLocalStorage = (id: number): void => {
+
   const tasksFromLocaleStorage = localStorage.getItem('tasks');
 
-  if(!tasksFromLocaleStorage) return;
+  if (!tasksFromLocaleStorage) return;
 
   const parsedTasks: Task[] = JSON.parse(tasksFromLocaleStorage);
   const updatedTasks = parsedTasks.map((task) => {
+
     if (task.id === id) return { ...task, status: 'completed' };
     else return task;
-  })
+
+  });
 
   localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+
 };
 
-const deleteTaskFromLocalStorage = (id: number) => {
+const deleteTaskFromLocalStorage = (id: number): void => {
+
   const tasksFromLocaleStorage = localStorage.getItem('tasks');
 
-  if(!tasksFromLocaleStorage || tasksFromLocaleStorage.length === 0) return;
+  if (!tasksFromLocaleStorage || tasksFromLocaleStorage.length === 0) return;
 
   const parsedTasks: Task[] = JSON.parse(tasksFromLocaleStorage);
   const updatedTasks = parsedTasks.filter(({ id: taskId }) => (taskId !== id));
@@ -271,22 +249,25 @@ const deleteTaskFromLocalStorage = (id: number) => {
 
 };
 
-const generateWelcomeMessage = () => {
+const generateWelcomeMessage = (): void => {
+
   if (!$greetings) return;
 
   const currentDate = new Date();
   const currentHour = currentDate.getHours();
   let greetings = '';
 
-  if(currentHour >= 6 && currentHour < 12) greetings = 'Good morning, have a nice day!';
+  if (currentHour >= 6 && currentHour < 12) greetings = 'Good morning, have a nice day!';
   else if (currentHour >= 12 && currentHour < 19) greetings = 'Good afternoon, I hope you are having a good day!';
-  else if (currentHour >= 19 && currentHour < 24) greetings = 'Good evening, I hope you have a good one!'
-  else greetings = 'Hi, web surfing into late hours?'
+  else if (currentHour >= 19 && currentHour < 24) greetings = 'Good evening, I hope you have a good one!';
+  else greetings = 'Hi, web surfing into late hours?';
 
   $greetings.textContent = greetings;
+
 };
 
-const getCurrentDate = () => {
+const getCurrentDate = (): void => {
+
   if (!$date) return;
 
   const currentDate = new Date();
@@ -294,44 +275,74 @@ const getCurrentDate = () => {
   const currentDayName = currentDate.toLocaleDateString(undefined, { weekday: 'long' });
 
   $date.textContent = `${currentDayName} ${currentDayNumber}`;
+
 };
 
-const loadCategories = () => {
-  if (!$addTaskCategories) return;
+const loadTasks = (): void => {
 
-  for (const categoryKey in categories) {
-    $addTaskCategories.innerHTML += `
-      <span 
-        class="chip-1 chip-1--color-${categoryKey}" 
-        onclick="selectTaskCategory(${categoryKey})"
-        id="category-${categoryKey}"
-      >
-        ${categories[categoryKey].name}
-      </span>`;
-  };
-};
-
-const initialLoadOfTasks = () => {
   const tasksFromLocaleStorage = getTasksFromLocalStorage();
 
   if (!tasksFromLocaleStorage || !$pendingTasksList || !$completedTasksList) return;
 
   const { pendingTasks, completedTasks } = tasksFromLocaleStorage;
 
-  updateListTitle('pending-tasks-title', (pendingTasks.length > 0) ? `Pending - ${pendingTasks.length}` : '');
-  if(pendingTasks.length > 0) pendingTasks.forEach((task) => renderTaskInList(task, $pendingTasksList));
+  elementsGenerators.renderListTitle('pending-tasks-title', (pendingTasks.length > 0) ? `Pending - ${pendingTasks.length}` : '');
+  if (pendingTasks.length > 0) {
 
-  updateListTitle('completed-tasks-title', (completedTasks.length > 0) ? `Completed - ${completedTasks.length}` : '');
-  if(completedTasks.length > 0) completedTasks.forEach((task) => renderTaskInList(task, $completedTasksList));
-  
+    pendingTasks.forEach((task) => {
+
+      elementsGenerators.renderTaskInList(task, 'pending-tasks-list');
+
+    });
+
+  }
+
+  elementsGenerators.renderListTitle('completed-tasks-title', (completedTasks.length > 0) ? `Completed - ${completedTasks.length}` : '');
+  if (completedTasks.length > 0) {
+
+    completedTasks.forEach((task) => {
+
+      elementsGenerators.renderTaskInList(task, 'completed-tasks-list');
+
+    });
+
+  }
+
 };
 
-//* Events listeners
-$addTaskButton?.addEventListener('click', () => openAddTaskModal(true));
+const initialLoad = (): void => {
+
+  generateWelcomeMessage();
+  getCurrentDate();
+  loadTasks();
+  elementsGenerators.renderCategories('create-task-categories');
+
+  AOS.init();
+
+  flatpickr('#create-task-input-date', {
+    enableTime: true,
+    dateFormat: 'Y-m-d h:i K',
+    static:     true
+  });
+
+  if ($personalLogo) $personalLogo.src = personalLogo;
+
+};
+
+// @ts-expect-error -->
+window.openAddTaskModal = openAddTaskModal;
+
+// @ts-expect-error -->
+window.selectTaskCategory = selectTaskCategory;
+
+// @ts-expect-error -->
+window.createTask = createTask;
+
+// @ts-expect-error -->
+window.completeTask = completeTask;
+
+// @ts-expect-error -->
+window.deleteTask = deleteTask;
 
 //* Initial load
-generateWelcomeMessage();
-getCurrentDate();
-loadCategories();
-initialLoadOfTasks();
-
+initialLoad();

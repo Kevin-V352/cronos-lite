@@ -1,10 +1,7 @@
 //* Fonts ============================================================================
 @font-face {
   font-family: 'Library3';
-  /* Production link */
-  src: url('/build/assets/library3.woff2') format('woff2');
-  /* Development link */
-  /* src: url('/src/assets/library3.woff2') format('woff2'); */
+  src: url('/src/assets/fonts/library3.woff2') format('woff2');
 }
 
 //* Fontsizes ========================================================================

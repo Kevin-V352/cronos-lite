@@ -4,15 +4,36 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev_build": "yarn tsc & yarn copyfiles -u 1 ./src/assets/* ./src/index.html ./build",
-    "dev": "concurrently \"yarn nodemon\" \"sass --watch ./src/sass/:build/css\"",
-    "build": "yarn dev_build & yarn sass ./src/sass:build/css"
+    "start": "webpack serve --open --mode=development",
+    "build": "rimraf dist && webpack --mode=production",
+    "docs": "rimraf docs && jsdoc --configure jsdoc.json --verbose"
   },
   "devDependencies": {
-    "concurrently": "^7.6.0",
-    "copyfiles": "^2.4.1",
-    "nodemon": "^2.0.21",
+    "@types/aos": "^3.0.4",
+    "@typescript-eslint/eslint-plugin": "^5.50.0",
+    "autoprefixer": "^10.4.14",
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.8.1",
+    "eslint": "^8.0.1",
+    "eslint-config-standard-with-typescript": "^35.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "html-webpack-plugin": "^5.5.3",
+    "mini-css-extract-plugin": "^2.7.6",
+    "postcss-loader": "^7.3.3",
+    "rimraf": "^5.0.1",
     "sass": "^1.58.3",
-    "typescript": "^4.9.5"
+    "sass-loader": "^13.3.2",
+    "style-loader": "^3.3.3",
+    "ts-loader": "^9.4.3",
+    "typescript": "*",
+    "webpack": "^5.88.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
+  },
+  "dependencies": {
+    "aos": "^2.3.4",
+    "flatpickr": "^4.6.13"
   }
 }
