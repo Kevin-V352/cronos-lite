@@ -42,22 +42,51 @@
     <h2 class="greetings" data-aos="fade-down" data-aos-delay="100" id="greetings"></h2>
     <h2 class="date" data-aos="fade-down" data-aos-delay="200" id="date"></h2>
 
-    <button onclick="openAddTaskModal(true)" class="button-1" data-aos="zoom-in" data-aos-delay="600">Create task</button>
+    <button 
+      onclick="openAddTaskModal(true)" 
+      class="button-1" 
+      data-aos="zoom-in" 
+      data-aos-delay="600"
+    >
+      Create task
+    </button>
 
     <dialog class="modal__container" data-aos="zoom-in" id="create-task-modal">
       <form class="modal__form" onsubmit="createTask(event)" id="create-task-form">
         <div class="modal__wrapper-title">
           <h3 class="modal__title">Create New Task</h3>
-          <button class="button--invisible" type="button" onclick="openAddTaskModal(false)">
+          <button 
+            class="button--invisible" 
+            type="button" 
+            onclick="openAddTaskModal(false)"
+          >
             <i class="fa-solid fa-x"></i>
           </button>
         </div>
-        <input type="text" class="input-1" placeholder="Task Title" name="create-task-title-input" required />
-        <textarea class="input-1 input-1--not-resizable" rows="5" name="create-task-description-textarea" required></textarea>
+        <input 
+          type="text" 
+          placeholder="Title"
+          class="input-1"
+          name="create-task-title-input"
+          required
+        />
+        <textarea 
+          placeholder="Description"
+          class="input-1 input-1--not-resizable" 
+          rows="5" 
+          name="create-task-description-textarea" 
+          required
+        ></textarea>
 
         <h4 class="modal__section">Choose date & time</h4>
-        <input type="datetime-local" class="input-1" placeholder="Select a date" name="create-task-input-date"
-          id="create-task-input-date" required />
+        <input 
+          type="datetime-local" c
+          lass="input-1" 
+          placeholder="Select a date" 
+          name="create-task-input-date"
+          id="create-task-input-date" 
+          required 
+        />
 
         <h4 class="modal__section">Category</h4>
         <div class="modal__categories" id="create-task-categories"></div>
@@ -67,17 +96,32 @@
     </dialog>
 
     <div class="list-1__container">
-      <h3 class="list-1__title" data-aos="fade-right" data-aos-delay="200" id="pending-tasks-title"></h3>
+      <h3 
+        lass="list-1__title" 
+        data-aos="fade-right" 
+        data-aos-delay="200" 
+        id="pending-tasks-title"
+      ></h3>
       <div class="list-1__content" id="pending-tasks-list"></div>
     </div>
 
     <div class="list-1__container">
-      <h3 class="list-1__title" data-aos="fade-right" data-aos-delay="200" id="completed-tasks-title"></h3>
+      <h3 
+        class="list-1__title" 
+        data-aos="fade-right" 
+        data-aos-delay="200" 
+        id="completed-tasks-title"
+      ></h3>
       <div class="list-1__content" id="completed-tasks-list"></div>
     </div>
 
-    <footer class="author__container" data-aos="zoom-out" data-aos-delay="1000" data-aos-once="true">
-      <span class="author__text" >Powered by</span>
+    <footer 
+      class="author__container" 
+      data-aos="zoom-out" 
+      data-aos-delay="1000" 
+      data-aos-once="true"
+    >
+      <span class="author__text">Powered by</span>
       <a href="https://github.com/Kevin-V352">
         <img id="personal-logo" class="author__image" alt="personal-logo" />
       </a>
