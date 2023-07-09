@@ -64,6 +64,13 @@ module.exports = {
         ]
       },
       {
+        test: /\.css$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader'
+        ]
+      },
+      {
         test: /\.png/,
         type: 'asset/resource'
       },
@@ -82,14 +89,14 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'styles.css'
     }),
-    /* new CopyWebpackPlugin({
+    new CopyWebpackPlugin({
       patterns: [
         {
           from: './src/assets/fontawesome',
           to: './fontawesome',
         },
       ],
-    }), */
+    }),
   ],
   resolve: {
     //* Order resolution

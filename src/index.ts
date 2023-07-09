@@ -1,3 +1,12 @@
+//* Third-party libraries
+import flatpickr from 'flatpickr';
+import AOS from 'aos';
+
+//* Custom Css
+import 'flatpickr/dist/flatpickr.min.css';
+import 'flatpickr/dist/themes/dark.css';
+import 'aos/dist/aos.css';
+
 //* Custom Sass
 import './sass/app.scss';
 
@@ -307,6 +316,14 @@ const initialLoad = (): void => {
   getCurrentDate();
   loadTasks();
   elementsGenerators.renderCategories('create-task-categories');
+
+  AOS.init();
+
+  flatpickr('#create-task-input-date', {
+    enableTime: true,
+    dateFormat: 'Y-m-d h:i K',
+    static:     true
+  });
 
   if ($personalLogo) $personalLogo.src = personalLogo;
 

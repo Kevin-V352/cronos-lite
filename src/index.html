@@ -30,21 +30,10 @@
   <meta name="language" content="English">
   <meta name="robots" content="index, follow">
   <meta name="keywords" content="todo, js, vanilla, app">
-  
-  <!-- Favicon -->
-  <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon">
 
-  <!-- Google fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- flatpickr -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-  <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
-
-  <!-- AOS -->
-  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <!-- External CSS -->
+  <link rel="stylesheet" href="./fontawesome/css/fontawesome.min.css" />
+  <link rel="stylesheet" href="./fontawesome/css/solid.min.css" />
 </head>
 
 <body>
@@ -93,30 +82,7 @@
         <img id="personal-logo" class="author__image" alt="personal-logo" />
       </a>
     </footer>
-
   </main>
-
-  <!-- Main -->
-  <script src="./index.js"></script>
-
-  <!-- Fontawesome -->
-  <script src="https://kit.fontawesome.com/f0626e74b7.js" crossorigin="anonymous"></script>
-
-  <!-- flatpickr -->
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
-  <!-- AOS -->
-  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-
-  <script>
-    flatpickr("#create-task-input-date", {
-      enableTime: true,
-      dateFormat: "Y-m-d h:i K",
-      static: true
-    });
-
-    AOS.init();
-  </script>
 </body>
 
 </html>
