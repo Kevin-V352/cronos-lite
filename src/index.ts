@@ -381,7 +381,7 @@ const initialLoad = (): void => {
     dateFormat: 'Y-m-d h:i K',
     static:     true,
     minDate:    'today',
-    minTime:    `${curretTime.getHours()}:${curretTime.getMinutes()}`
+    minTime:    `${curretTime.getHours() + 1}`
   });
 
   if ($personalLogo) $personalLogo.src = personalLogo;
