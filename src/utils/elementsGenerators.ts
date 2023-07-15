@@ -4,7 +4,14 @@ import { categories } from '../data';
 
 import { selectors } from '.';
 
-export const renderListTitle = (listTitleElementId: 'pending-tasks-title' | 'completed-tasks-title', value: string): void => {
+/** @module utils/elementsGenerators */
+
+/**
+ * It swaps the title between lists.
+ * @param {('pending-tasks-title' | 'completed-tasks-title')} listTitleElementId ID of the title element.
+ * @param {string} value Value of the new title.
+ */
+const renderListTitle = (listTitleElementId: 'pending-tasks-title' | 'completed-tasks-title', value: string): void => {
 
   const $listTitle = document.getElementById(listTitleElementId) as HTMLTitleElement;
 
@@ -14,7 +21,14 @@ export const renderListTitle = (listTitleElementId: 'pending-tasks-title' | 'com
 
 };
 
-export const renderTaskInList = (
+/**
+ * It adds a task into a list.
+ * @param {Task} task Task to add.
+ * @param {string} parentElementId Parent element ID.
+ * @param {('pending-tasks-title' | 'completed-tasks-title')} listTitleId ID of the title element.
+ * @param {string} listTitleValue Value of the new title.
+ */
+const renderTaskInList = (
   task: Task,
   parentElementId: string,
   listTitleId?: 'pending-tasks-title' | 'completed-tasks-title',
@@ -59,7 +73,11 @@ export const renderTaskInList = (
 
 };
 
-export const renderCategories = (parentElementId: string): void => {
+/**
+ * It renders the task categories.
+ * @param {string} parentElementId Parent element id.
+ */
+const renderCategories = (parentElementId: string): void => {
 
   const $parentElement = selectors.byId(parentElementId);
 
@@ -83,4 +101,10 @@ export const renderCategories = (parentElementId: string): void => {
 
   };
 
+};
+
+export {
+  renderListTitle,
+  renderTaskInList,
+  renderCategories
 };
