@@ -374,10 +374,14 @@ const initialLoad = (): void => {
 
   AOS.init();
 
+  const curretTime = new Date();
+
   flatpickr('#create-task-input-date', {
     enableTime: true,
     dateFormat: 'Y-m-d h:i K',
-    static:     true
+    static:     true,
+    minDate:    'today',
+    minTime:    `${curretTime.getHours()}:${curretTime.getMinutes()}`
   });
 
   if ($personalLogo) $personalLogo.src = personalLogo;
