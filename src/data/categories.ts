@@ -1,4 +1,3 @@
-
 export const categories: Record<number, { icon: string, name: string }> = {
   1:  { icon: 'fa-solid fa-utensils', name: 'Food' },
   2:  { icon: 'fa-solid fa-dumbbell', name: 'Workout' },

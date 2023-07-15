@@ -17,7 +17,7 @@ import personalLogo from './assets/icons/personal-logo.png';
 import { elementsGenerators, nodeModifiers, selectors } from './utils';
 
 //* Interfaces
-import { type Task } from './interfaces';
+import { type LocalStorageTasks, type Task } from './interfaces';
 
 //* Elements
 const $date = selectors.byId('date') as HTMLTitleElement | null;
@@ -32,7 +32,12 @@ const $personalLogo = selectors.byId('personal-logo') as HTMLImageElement | null
 let lastCategorySelected: number | null = null;
 
 //* Functions
-const getTasksFromLocalStorage = (): { allTasks: Task[], pendingTasks: Task[], completedTasks: Task[] } | null => {
+
+/**
+ * It gets all tasks stored in the Local storage.
+ * @returns {LocalStorageTasks | null} The tasks stored in the Local storage.
+ */
+const getTasksFromLocalStorage = (): LocalStorageTasks | null => {
 
   const tasksFromLocaleStorage = localStorage.getItem('tasks');
 
@@ -58,6 +63,9 @@ const getTasksFromLocalStorage = (): { allTasks: Task[], pendingTasks: Task[], c
 
 };
 
+/**
+ * It resets the selected category.
+ */
 const resetCategory = (): void => {
 
   const previousCategorySelected = document.getElementsByClassName('chip-1--selected')[0] as HTMLSpanElement;
@@ -65,6 +73,10 @@ const resetCategory = (): void => {
 
 };
 
+/**
+ * It selects a category and displays it in the UI.
+ * @param {number} id Category ID.
+ */
 const selectTaskCategory = (id: number): void => {
 
   resetCategory();
@@ -79,6 +91,9 @@ const selectTaskCategory = (id: number): void => {
 
 };
 
+/**
+ * It resets all form values.
+ */
 const resetTaskForm = (): void => {
 
   resetCategory();
@@ -87,6 +102,10 @@ const resetTaskForm = (): void => {
 
 };
 
+/**
+ * It opens the form for adding a new task.
+ * @param {boolean} open Opening status.
+ */
 const openAddTaskModal = (open: boolean): void => {
 
   if (!$createTaskModal) return;
@@ -101,6 +120,10 @@ const openAddTaskModal = (open: boolean): void => {
 
 };
 
+/**
+ * It extracts the values from the form and creates a new pending task.
+ * @param {FormDataEvent} e Form values.
+ */
 const createTask = (e: FormDataEvent): void => {
 
   e.preventDefault();
@@ -156,6 +179,10 @@ const createTask = (e: FormDataEvent): void => {
 
 };
 
+/**
+ * It marks a task as complete and moves it to the list of completed tasks in the UI.
+ * @param {number} id Task ID.
+ */
 const completeTask = (id: number): void => {
 
   if (!$completedTasksList) return;
@@ -185,6 +212,10 @@ const completeTask = (id: number): void => {
 
 };
 
+/**
+ * It deletes a task from the list of completed tasks.
+ * @param {number} id Task ID.
+ */
 const deleteTask = (id: number): void => {
 
   const tasksFromLocaleStorage = getTasksFromLocalStorage();
@@ -199,6 +230,10 @@ const deleteTask = (id: number): void => {
 
 };
 
+/**
+ * It stores a task in the Local storage.
+ * @param {Task} newTask Task to store.
+ */
 const saveTaskInLocalStorage = (newTask: Task): void => {
 
   const tasksFromLocaleStorage = localStorage.getItem('tasks');
@@ -218,6 +253,10 @@ const saveTaskInLocalStorage = (newTask: Task): void => {
 
 };
 
+/**
+ * It updates the task information in the local storage.
+ * @param {number} id Task ID.
+ */
 const updateStageOfTaskInLocalStorage = (id: number): void => {
 
   const tasksFromLocaleStorage = localStorage.getItem('tasks');
@@ -236,6 +275,10 @@ const updateStageOfTaskInLocalStorage = (id: number): void => {
 
 };
 
+/**
+ * It deletes a task from the local storage.
+ * @param {number} id Task ID.
+ */
 const deleteTaskFromLocalStorage = (id: number): void => {
 
   const tasksFromLocaleStorage = localStorage.getItem('tasks');
@@ -249,6 +292,9 @@ const deleteTaskFromLocalStorage = (id: number): void => {
 
 };
 
+/**
+ * It generates a welcome message in the UI when loading the web.
+ */
 const generateWelcomeMessage = (): void => {
 
   if (!$greetings) return;
@@ -266,6 +312,9 @@ const generateWelcomeMessage = (): void => {
 
 };
 
+/**
+ * It gets the current date (according to the client's browser) and displays it in the UI.
+ */
 const getCurrentDate = (): void => {
 
   if (!$date) return;
@@ -278,6 +327,9 @@ const getCurrentDate = (): void => {
 
 };
 
+/**
+ * It loads the tasks in the UI when loading the web.
+ */
 const loadTasks = (): void => {
 
   const tasksFromLocaleStorage = getTasksFromLocalStorage();
@@ -295,7 +347,7 @@ const loadTasks = (): void => {
 
     });
 
-  }
+  };
 
   elementsGenerators.renderListTitle('completed-tasks-title', (completedTasks.length > 0) ? `Completed - ${completedTasks.length}` : '');
   if (completedTasks.length > 0) {
@@ -306,10 +358,13 @@ const loadTasks = (): void => {
 
     });
 
-  }
+  };
 
 };
 
+/**
+ * It executes all the functions and libraries necessary for the operation of the web.
+ */
 const initialLoad = (): void => {
 
   generateWelcomeMessage();

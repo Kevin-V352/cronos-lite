@@ -6,3 +6,9 @@ export interface Task {
   date: string
   status: 'pending' | 'completed'
 };
+
+export interface LocalStorageTasks {
+  allTasks: Task[]
+  pendingTasks: Task[]
+  completedTasks: Task[]
+};
