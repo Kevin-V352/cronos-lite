@@ -3,14 +3,14 @@ const requestNotificationAccess = async (): Promise<NotificationPermission> => {
   try {
 
     await Notification.requestPermission();
-    return Notification.permission;
 
   } catch (error) {
 
     console.error(error);
-    return Notification.permission;
 
   };
+
+  return Notification.permission;
 
 };
 

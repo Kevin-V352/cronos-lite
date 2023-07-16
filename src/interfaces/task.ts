@@ -1,3 +1,5 @@
+export type TaskStatus = 'pending' | 'completed'
+
 export interface Task {
   id: number
   title: string
@@ -5,7 +7,7 @@ export interface Task {
   category: number
   date: string
   dateObj: Date | null
-  status: 'pending' | 'completed'
+  status: TaskStatus
   timeOutId: ReturnType<typeof setTimeout> | undefined
 };
 

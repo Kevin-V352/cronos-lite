@@ -24,7 +24,8 @@
                         "align": "value"
                     }
                 ],
-                "@typescript-eslint/key-spacing": "off"
+                "@typescript-eslint/key-spacing": "off",
+                "no-case-declarations": "off"
             }
         }
     ],

@@ -24,7 +24,11 @@ import {
 } from './utils';
 
 //* Interfaces
-import { type LocalStorageTasks, type Task } from './interfaces';
+import {
+  type TaskStatus,
+  type LocalStorageTasks,
+  type Task
+} from './interfaces';
 
 //* Elements
 const $date = selectors.byId('date') as HTMLTitleElement | null;
@@ -313,6 +317,33 @@ const deleteTaskFromLocalStorage = (id: number): void => {
 
 };
 
+const updateTasksInLocalStorage = (status: TaskStatus, updatedTasks: Task[]): void => {
+
+  const tasksFromLocaleStorage = getTasksFromLocalStorage();
+
+  if (!tasksFromLocaleStorage) return;
+
+  switch (status) {
+
+    case 'pending':
+      const { completedTasks } = tasksFromLocaleStorage;
+
+      localStorage.setItem('tasks', JSON.stringify([...completedTasks, ...updatedTasks]));
+      break;
+
+    case 'completed':
+      const { pendingTasks } = tasksFromLocaleStorage;
+
+      localStorage.setItem('tasks', JSON.stringify([...pendingTasks, ...updatedTasks]));
+      break;
+
+    default:
+      break;
+
+  };
+
+};
+
 /**
  * It generates a welcome message in the UI when loading the web.
  */
@@ -364,17 +395,19 @@ const loadTasks = (): void => {
     (pendingTasks.length > 0) ? `Pending - ${pendingTasks.length}` : ''
   );
 
+  //* PENDING TASKS
+
   if (pendingTasks.length > 0) {
 
-    pendingTasks.forEach((task) => {
+    const updatedPendingTasks = pendingTasks.map((task) => {
 
       elementsGenerators.renderTaskInList(task, 'pending-tasks-list');
 
       const { title, description, dateObj } = task;
 
-      if (!dateObj) return;
+      if (!dateObj) return task;
 
-      timers.createTimer(new Date(dateObj), () => {
+      const newTimeOutId = timers.createTimer(new Date(dateObj), () => {
 
         notifications.pushNotification(title, {
           body: description,
@@ -384,9 +417,18 @@ const loadTasks = (): void => {
 
       });
 
+      return {
+        ...task,
+        timeOutId: newTimeOutId
+      };
+
     });
 
+    updateTasksInLocalStorage('pending', updatedPendingTasks);
+
   };
+
+  //* COMPLETED TASKS
 
   elementsGenerators.renderListTitle(
     'completed-tasks-title',
