@@ -12,9 +12,16 @@ import './sass/app.scss';
 
 //* Images
 import personalLogo from './assets/icons/personal-logo.png';
+import pageFavicon from './assets/icons/favicon.ico';
 
 //* Utils
-import { elementsGenerators, nodeModifiers, selectors } from './utils';
+import {
+  elementsGenerators,
+  nodeModifiers,
+  notifications,
+  selectors,
+  timers
+} from './utils';
 
 //* Interfaces
 import { type LocalStorageTasks, type Task } from './interfaces';
@@ -30,6 +37,7 @@ const $personalLogo = selectors.byId('personal-logo') as HTMLImageElement | null
 
 //* Variables
 let lastCategorySelected: number | null = null;
+let lastSelectedDate: Date | null = null;
 
 //* Functions
 
@@ -152,6 +160,16 @@ const createTask = (e: FormDataEvent): void => {
 
   };
 
+  const timeOutId = timers.createTimer(lastSelectedDate, () => {
+
+    notifications.pushNotification(title, {
+      body: description,
+      icon: pageFavicon,
+      lang: 'en'
+    });
+
+  });
+
   const id = Date.now();
 
   const newTask: Task = {
@@ -159,9 +177,10 @@ const createTask = (e: FormDataEvent): void => {
     title,
     description,
     date,
+    dateObj:  lastSelectedDate,
     category: lastCategorySelected ?? 6,
-    // eslint-disable-next-line key-spacing
-    status: 'pending'
+    status:   'pending',
+    timeOutId
   };
 
   const tasksFromLocaleStorage = getTasksFromLocalStorage();
@@ -198,6 +217,8 @@ const completeTask = (id: number): void => {
   const taskToChangeStage = pendingTasks.find((task) => task.id === id);
 
   if (!taskToChangeStage) return;
+
+  clearTimeout(taskToChangeStage.timeOutId);
 
   elementsGenerators.renderTaskInList(
     { ...taskToChangeStage, status: 'completed' },
@@ -338,18 +359,40 @@ const loadTasks = (): void => {
 
   const { pendingTasks, completedTasks } = tasksFromLocaleStorage;
 
-  elementsGenerators.renderListTitle('pending-tasks-title', (pendingTasks.length > 0) ? `Pending - ${pendingTasks.length}` : '');
+  elementsGenerators.renderListTitle(
+    'pending-tasks-title',
+    (pendingTasks.length > 0) ? `Pending - ${pendingTasks.length}` : ''
+  );
+
   if (pendingTasks.length > 0) {
 
     pendingTasks.forEach((task) => {
 
       elementsGenerators.renderTaskInList(task, 'pending-tasks-list');
 
+      const { title, description, dateObj } = task;
+
+      if (!dateObj) return;
+
+      timers.createTimer(new Date(dateObj), () => {
+
+        notifications.pushNotification(title, {
+          body: description,
+          icon: pageFavicon,
+          lang: 'en'
+        });
+
+      });
+
     });
 
   };
 
-  elementsGenerators.renderListTitle('completed-tasks-title', (completedTasks.length > 0) ? `Completed - ${completedTasks.length}` : '');
+  elementsGenerators.renderListTitle(
+    'completed-tasks-title',
+    (completedTasks.length > 0) ? `Completed - ${completedTasks.length}` : ''
+  );
+
   if (completedTasks.length > 0) {
 
     completedTasks.forEach((task) => {
@@ -365,7 +408,7 @@ const loadTasks = (): void => {
 /**
  * It executes all the functions and libraries necessary for the operation of the web.
  */
-const initialLoad = (): void => {
+const initialLoad = async (): Promise<void> => {
 
   generateWelcomeMessage();
   getCurrentDate();
@@ -377,14 +420,22 @@ const initialLoad = (): void => {
   const curretTime = new Date();
 
   flatpickr('#create-task-input-date', {
-    enableTime: true,
-    dateFormat: 'Y-m-d h:i K',
-    static:     true,
-    minDate:    'today',
-    minTime:    `${curretTime.getHours() + 1}`
+    enableTime:      true,
+    dateFormat:      'Y-m-d h:i K',
+    static:          true,
+    minDate:         'today',
+    minTime:         `${curretTime.getHours()}`,
+    minuteIncrement: 1,
+    onChange:        (dates) => {
+
+      lastSelectedDate = dates[0];
+
+    }
   });
 
   if ($personalLogo) $personalLogo.src = personalLogo;
+
+  if (Notification.permission !== 'granted') await notifications.requestNotificationAccess();
 
 };
 
@@ -404,4 +455,5 @@ window.completeTask = completeTask;
 window.deleteTask = deleteTask;
 
 //* Initial load
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
 initialLoad();

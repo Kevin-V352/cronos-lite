@@ -4,7 +4,9 @@ export interface Task {
   description?: string
   category: number
   date: string
+  dateObj: Date | null
   status: 'pending' | 'completed'
+  timeOutId: ReturnType<typeof setTimeout> | undefined
 };
 
 export interface LocalStorageTasks {
