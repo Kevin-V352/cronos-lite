@@ -130,6 +130,13 @@ const createTask = (e: FormDataEvent): void => {
 
   };
 
+  if (lastSelectedDate && lastSelectedDate.getTime() < Date.now()) {
+
+    alert('The date and time cannot be less than the current date and time. Are you a time traveler?');
+    return;
+
+  };
+
   const timeOutId = timers.createTimer(lastSelectedDate, () => {
 
     notifications.pushNotification(title, {
@@ -336,14 +343,11 @@ const initialLoad = async (): Promise<void> => {
 
   AOS.init();
 
-  const curretTime = new Date();
-
   flatpickr('#create-task-input-date', {
     enableTime:      true,
     dateFormat:      'Y-m-d h:i K',
     static:          true,
     minDate:         'today',
-    minTime:         `${curretTime.getHours()}`,
     minuteIncrement: 1,
     onChange:        (dates) => {
 

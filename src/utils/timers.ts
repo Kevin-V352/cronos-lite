@@ -10,8 +10,7 @@ const createTimer = (specificDate: Date | null, cb: () => void): ReturnType<type
 
   if (!specificDate) return;
 
-  const now = new Date();
-  const timeLeft = specificDate.getTime() - now.getTime();
+  const timeLeft = specificDate.getTime() - Date.now();
 
   if (timeLeft > 0) return setTimeout(cb, timeLeft);
 
