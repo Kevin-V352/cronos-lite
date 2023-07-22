@@ -1,3 +1,10 @@
+/** @module utils/notifications */
+
+/**
+ * It requests the user's permission to display notifications on their device.
+ * @async
+ * @returns {('granted' | 'default' | 'denied')} User permission status.
+ */
 const requestNotificationAccess = async (): Promise<NotificationPermission> => {
 
   try {
@@ -14,6 +21,11 @@ const requestNotificationAccess = async (): Promise<NotificationPermission> => {
 
 };
 
+/**
+ * It triggers a notification on the user's device.
+ * @param {string} title Notification title.
+ * @param {NotificationOptions} options Notification options.
+ */
 const pushNotification = (title: string, options: NotificationOptions): void => {
 
   if (Notification.permission !== 'granted') return;
