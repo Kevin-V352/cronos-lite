@@ -17,6 +17,7 @@ import pageFavicon from './assets/icons/favicon.ico';
 //* Utils
 import {
   elementsGenerators,
+  localStorageTools,
   nodeModifiers,
   notifications,
   selectors,
@@ -24,11 +25,7 @@ import {
 } from './utils';
 
 //* Interfaces
-import {
-  type TaskStatus,
-  type LocalStorageTasks,
-  type Task
-} from './interfaces';
+import { type Task } from './interfaces';
 
 //* Elements
 const $date = selectors.byId('date') as HTMLTitleElement | null;
@@ -44,37 +41,6 @@ let lastCategorySelected: number | null = null;
 let lastSelectedDate: Date | null = null;
 
 //* Functions
-
-/**
- * It gets all tasks stored in the Local storage.
- * @returns {LocalStorageTasks | null} The tasks stored in the Local storage.
- */
-const getTasksFromLocalStorage = (): LocalStorageTasks | null => {
-
-  const tasksFromLocaleStorage = localStorage.getItem('tasks');
-
-  if (!tasksFromLocaleStorage) return null;
-
-  const allTasks: Task[] = JSON.parse(tasksFromLocaleStorage);
-
-  const pendingTasks: Task[] = [];
-  const completedTasks: Task[] = [];
-
-  allTasks.forEach((task) => {
-
-    if (task.status === 'pending') pendingTasks.push(task);
-    else completedTasks.push(task);
-
-  });
-
-  return {
-    allTasks,
-    pendingTasks,
-    completedTasks
-  };
-
-};
-
 /**
  * It resets the selected category.
  */
@@ -187,9 +153,9 @@ const createTask = (e: FormDataEvent): void => {
     timeOutId
   };
 
-  const tasksFromLocaleStorage = getTasksFromLocalStorage();
+  const tasksFromLocaleStorage = localStorageTools.getTasksFromLocalStorage();
 
-  saveTaskInLocalStorage(newTask);
+  localStorageTools.saveTaskInLocalStorage(newTask);
   elementsGenerators.renderTaskInList(
     newTask,
     'pending-tasks-list',
@@ -212,7 +178,7 @@ const completeTask = (id: number): void => {
 
   nodeModifiers.removeNode(id);
 
-  const tasksFromLocaleStorage = getTasksFromLocalStorage();
+  const tasksFromLocaleStorage = localStorageTools.getTasksFromLocalStorage();
 
   if (!tasksFromLocaleStorage) return;
 
@@ -233,7 +199,7 @@ const completeTask = (id: number): void => {
 
   elementsGenerators.renderListTitle('pending-tasks-title', ((pendingTasks.length - 1) > 0) ? `Pending - ${(pendingTasks.length - 1)}` : '');
 
-  updateStageOfTaskInLocalStorage(id);
+  localStorageTools.updateStageOfTaskInLocalStorage(id);
 
 };
 
@@ -243,7 +209,7 @@ const completeTask = (id: number): void => {
  */
 const deleteTask = (id: number): void => {
 
-  const tasksFromLocaleStorage = getTasksFromLocalStorage();
+  const tasksFromLocaleStorage = localStorageTools.getTasksFromLocalStorage();
 
   if (!tasksFromLocaleStorage) return;
 
@@ -251,96 +217,7 @@ const deleteTask = (id: number): void => {
 
   elementsGenerators.renderListTitle('completed-tasks-title', ((completedTasks.length - 1) > 0) ? `Completed - ${(completedTasks.length - 1)}` : '');
   nodeModifiers.removeNode(id);
-  deleteTaskFromLocalStorage(id);
-
-};
-
-/**
- * It stores a task in the Local storage.
- * @param {Task} newTask Task to store.
- */
-const saveTaskInLocalStorage = (newTask: Task): void => {
-
-  const tasksFromLocaleStorage = localStorage.getItem('tasks');
-
-  if (tasksFromLocaleStorage) {
-
-    const parsedTasks: Task[] = JSON.parse(tasksFromLocaleStorage);
-    const newTasks: Task[] = [...parsedTasks, newTask];
-
-    localStorage.setItem('tasks', JSON.stringify(newTasks));
-
-  } else {
-
-    localStorage.setItem('tasks', JSON.stringify([newTask]));
-
-  }
-
-};
-
-/**
- * It updates the task information in the local storage.
- * @param {number} id Task ID.
- */
-const updateStageOfTaskInLocalStorage = (id: number): void => {
-
-  const tasksFromLocaleStorage = localStorage.getItem('tasks');
-
-  if (!tasksFromLocaleStorage) return;
-
-  const parsedTasks: Task[] = JSON.parse(tasksFromLocaleStorage);
-  const updatedTasks = parsedTasks.map((task) => {
-
-    if (task.id === id) return { ...task, status: 'completed' };
-    else return task;
-
-  });
-
-  localStorage.setItem('tasks', JSON.stringify(updatedTasks));
-
-};
-
-/**
- * It deletes a task from the local storage.
- * @param {number} id Task ID.
- */
-const deleteTaskFromLocalStorage = (id: number): void => {
-
-  const tasksFromLocaleStorage = localStorage.getItem('tasks');
-
-  if (!tasksFromLocaleStorage || tasksFromLocaleStorage.length === 0) return;
-
-  const parsedTasks: Task[] = JSON.parse(tasksFromLocaleStorage);
-  const updatedTasks = parsedTasks.filter(({ id: taskId }) => (taskId !== id));
-
-  localStorage.setItem('tasks', JSON.stringify([...updatedTasks]));
-
-};
-
-const updateTasksInLocalStorage = (status: TaskStatus, updatedTasks: Task[]): void => {
-
-  const tasksFromLocaleStorage = getTasksFromLocalStorage();
-
-  if (!tasksFromLocaleStorage) return;
-
-  switch (status) {
-
-    case 'pending':
-      const { completedTasks } = tasksFromLocaleStorage;
-
-      localStorage.setItem('tasks', JSON.stringify([...completedTasks, ...updatedTasks]));
-      break;
-
-    case 'completed':
-      const { pendingTasks } = tasksFromLocaleStorage;
-
-      localStorage.setItem('tasks', JSON.stringify([...pendingTasks, ...updatedTasks]));
-      break;
-
-    default:
-      break;
-
-  };
+  localStorageTools.deleteTaskFromLocalStorage(id);
 
 };
 
@@ -384,7 +261,7 @@ const getCurrentDate = (): void => {
  */
 const loadTasks = (): void => {
 
-  const tasksFromLocaleStorage = getTasksFromLocalStorage();
+  const tasksFromLocaleStorage = localStorageTools.getTasksFromLocalStorage();
 
   if (!tasksFromLocaleStorage || !$pendingTasksList || !$completedTasksList) return;
 
@@ -424,7 +301,7 @@ const loadTasks = (): void => {
 
     });
 
-    updateTasksInLocalStorage('pending', updatedPendingTasks);
+    localStorageTools.updateTasksInLocalStorage('pending', updatedPendingTasks);
 
   };
 
