@@ -4,6 +4,8 @@ import {
   type TaskStatus
 } from '../interfaces';
 
+/** @module utils/localStorageTools */
+
 /**
  * It gets all tasks stored in the Local storage.
  * @returns {LocalStorageTasks | null} The tasks stored in the Local storage.
@@ -96,6 +98,11 @@ const deleteTaskFromLocalStorage = (id: number): void => {
 
 };
 
+/**
+ * It updates all tasks of a specific category in the local storage.
+ * @param {('pending' | 'completed')} status Tasks categories.
+ * @param {('Task')} updatedTasks Tasks to updated.
+ */
 const updateTasksInLocalStorage = (status: TaskStatus, updatedTasks: Task[]): void => {
 
   const tasksFromLocaleStorage = getTasksFromLocalStorage();
