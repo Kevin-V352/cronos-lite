@@ -1,5 +1,6 @@
 @use '../variables' as *;
 @use '../tools' as *;
+@use '../components/buttons' as *;
 
 html {
   font-size: 10px;
@@ -28,6 +29,7 @@ main {
   @include flex-column-alignment;
   margin: 0;
   padding: 20px;
+  align-items: center;
 
   @include screen-md(){
     padding: 80px;
@@ -35,7 +37,6 @@ main {
 
   @include screen-lg {
     padding: 40px 250px;
-    align-items: center;
   };
 
   @include screen-xxl {
@@ -44,12 +45,16 @@ main {
 }
 
 .title {
-  font-family: Library3;
   @include base-title($color__text--primary, $font__size--primary, 0 0 20px 0);
+  font-family: Library3;
+  text-align: center;
+  margin-bottom: 20px
 }
 
 .greetings {
   @include base-title($color__text--primary, $font__size--secondary, initial, 700);
+  text-align: center;
+  margin-bottom: 10px
 }
 
 .date {
@@ -84,6 +89,16 @@ main {
 .modal__form {
   @include flex-column-alignment;
   gap: 20px;
+}
+
+.modal__submit-button {
+  @extend .button-1;
+
+  margin-top: 20px;
+
+  @include screen-md(){
+    margin-inline: auto;
+  };
 }
 
 .modal__section {
