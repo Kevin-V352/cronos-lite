@@ -21,7 +21,7 @@ module.exports = {
   output: {
     path: path.join(basePath, distPath),
     filename: '[name].js',
-    assetModuleFilename: 'assets/[name].[ext]'
+    assetModuleFilename: 'assets/[name][ext]'
   },
   //* Dev mode server config
   devServer: {
@@ -76,6 +76,10 @@ module.exports = {
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: 'asset/resource',
+      },
+      {
+        test: /\.(ogg)$/i,
         type: 'asset/resource',
       },
     ]

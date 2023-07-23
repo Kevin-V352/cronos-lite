@@ -139,7 +139,7 @@ const createTask = (e: FormDataEvent): void => {
 
   const timeOutId = timers.createTimer(lastSelectedDate, () => {
 
-    notifications.pushNotification(title, {
+    void notifications.pushNotification(title, {
       body: description,
       icon: pageFavicon,
       lang: 'en'
@@ -172,6 +172,11 @@ const createTask = (e: FormDataEvent): void => {
 
   resetTaskForm();
   openAddTaskModal(false);
+  setTimeout(() => {
+
+    if (Notification.permission !== 'granted') void notifications.requestNotificationAccess(true);
+
+  }, 1000);
 
 };
 
@@ -293,7 +298,7 @@ const loadTasks = (): void => {
 
       const newTimeOutId = timers.createTimer(new Date(dateObj), () => {
 
-        notifications.pushNotification(title, {
+        void notifications.pushNotification(title, {
           body: description,
           icon: pageFavicon,
           lang: 'en'
@@ -334,7 +339,7 @@ const loadTasks = (): void => {
 /**
  * It executes all the functions and libraries necessary for the operation of the web.
  */
-const initialLoad = async (): Promise<void> => {
+const initialLoad = (): void => {
 
   generateWelcomeMessage();
   getCurrentDate();
@@ -358,8 +363,6 @@ const initialLoad = async (): Promise<void> => {
 
   if ($personalLogo) $personalLogo.src = personalLogo;
 
-  if (Notification.permission !== 'granted') await notifications.requestNotificationAccess();
-
 };
 
 // @ts-expect-error -->
@@ -378,5 +381,4 @@ window.completeTask = completeTask;
 window.deleteTask = deleteTask;
 
 //* Initial load
-// eslint-disable-next-line @typescript-eslint/no-floating-promises
 initialLoad();
